@@ -1,0 +1,128 @@
+.header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center;
+  /* color: lightblue !important ; */
+  background-color: #001529;
+  border-bottom: 1px solid gray;
+  overflow:hidden;
+}
+
+.ant-menu-horizontal.ant-menu-root {
+  font-size: 16px;
+  border: none;
+}
+
+.ant-menu-horizontal.ant-menu-root .ant-menu-item {
+  color: white;
+  height: 32px;
+  margin-bottom: 12px;
+}
+
+.ant-menu-horizontal.ant-menu-root .ant-menu-item > span {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ant-menu-horizontal.ant-menu-root .ant-menu-item:hover::after {
+  border: none;
+}
+
+.ant-menu-horizontal.ant-menu-root .ant-menu-item-selected {
+  height: 32px;
+  color: #3c7d06;
+  font-weight: 500;
+  background-color: #e5f2de;
+  border-radius: 22px;
+  border: none;
+}
+
+.ant-menu-horizontal.ant-menu-root .ant-menu-item-selected:hover {
+  background-color: #e5f2de !important;
+}
+
+.ant-menu-horizontal.ant-menu-root .ant-menu-item-selected::after {
+  /* border-bottom: 2px solid #ff5500; */
+  border: none;
+  background-color: #e5f2de !important;
+}
+
+.secureDoc-logo-image {
+  height: 200px !important;
+  
+}
+
+.layout-menu {
+  display: block;
+  padding-right: 4%;
+  font-weight: 500;
+  font-size: 16px;
+  /* border-bottom: 1px solid gray; */
+}
+
+.logo-wrapper {
+  /* color: white; */
+  font-size: 22px;
+  /* font-weight: 700; */
+  padding-left: 4%;
+  /* height: 84px; */
+}
+
+.logo-inner-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-inner-wrapper h2 {
+  color: black;
+  font-size: 24px;
+}
+
+.drawer-button {
+  display: none;
+}
+
+.drawer-wrapper {
+  display: none;
+}
+
+.drawer-layout-menu {
+  background-color: transparent;
+  color: black;
+}
+
+@media only screen and (max-width: 1024px) {
+  .logo-inner-wrapper {
+    font-size: 20px;
+  }
+
+  .item {
+    font-size: 14px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .header {
+    height: 50px;
+  }
+
+  .logo {
+    font-size: 18px;
+  }
+
+  .layout-menu {
+    display: none;
+  }
+
+  .drawer-wrapper {
+    display: block;
+  }
+
+  .drawer-button {
+    display: block;
+  }
+}
