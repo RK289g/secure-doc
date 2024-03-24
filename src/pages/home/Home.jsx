@@ -1,7 +1,12 @@
+import "./Home.css";
+import Hero from "../../components/hero-section/Hero";
+
 const Home = () => {
   return (
-    <div>
-      <h1>Home</h1>
+    <div className="home-wrapper">
+      <div className="home-inner-wrapper">
+        <Hero />
+      </div>
     </div>
   );
 };

@@ -1,0 +1,24 @@
+.hero-wrapper {
+  background-image: url("./images/heroImage.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 1140px;
+  height: 762px;
+  filter: brightness(60%);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-title {
+  color: #ffffff;
+}
+
+.search-container {
+  width: 780px !important;
+  padding: 40px 30px;
+  background-color: #ffffff1a;
+}
