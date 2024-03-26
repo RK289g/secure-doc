@@ -1,7 +1,7 @@
 import { Link, Outlet } from "react-router-dom";
 import "./LayoutWrapper.css";
 import useGetMenuKey from "../../hooks/useGetMenuKey";
-import { Header } from "antd/es/layout/layout";
+// import { Header } from "antd/es/layout/layout";
 import { Drawer, Image, Menu } from "antd";
 import { GithubOutlined, MenuFoldOutlined } from "@ant-design/icons";
 import logo from "./images/Logo.png";
@@ -33,7 +33,10 @@ const LayoutWrapper = () => {
     getItem(<Link to="/guide"> GUIDE</Link>, "guide"),
     getItem(<Link to="/about">ABOUT</Link>, "about"),
     getItem(
-      <a href="#github">
+      <a
+        href="https://github.com/ruhulamin1398/SecureDoc__Blockchain-Based-Document-Authentication"
+        target="_blank"
+      >
         <GithubOutlined /> GITHUB
       </a>,
       "github"
@@ -44,7 +47,7 @@ const LayoutWrapper = () => {
 
   return (
     <>
-      <Header className="header">
+      <header className="header">
         <div className="header-container">
           <Link to="/" className="logo-wrapper">
             <div className="logo-inner-wrapper">
@@ -59,8 +62,8 @@ const LayoutWrapper = () => {
 
           <Menu
             className="layout-menu"
-            theme="dark"
-            color="#000000"
+            // theme="dark"
+            // color="#ffffff"
             mode="horizontal"
             items={items}
             selectedKeys={menuKey}
@@ -87,7 +90,7 @@ const LayoutWrapper = () => {
             />
           </Drawer>
         </div>
-      </Header>
+      </header>
       <Outlet />
     </>
   );
