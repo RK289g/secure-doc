@@ -23,6 +23,7 @@ const Hero = () => {
 
   return (
     <div className="hero-wrapper">
+      <div className="hero-inner-wrapper">
       <h3 className="hero-title font-ibm">SecureDoc Universal Verifier</h3>
       {showSearch && (
         <div className="search-container">
@@ -105,6 +106,7 @@ const Hero = () => {
           anywhere.
         </p>
       </div>
+    </div>
     </div>
   );
 };
