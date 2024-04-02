@@ -1,6 +1,7 @@
-import { Button, Input } from "antd";
+import { Button, Input, Upload } from "antd";
 import "./Hero.css";
 import { useRef, useState } from "react";
+import CV from "../../../assets/pdf/Certificate.pdf";
 const { Search } = Input;
 const Hero = () => {
   const fileInputRef = useRef(null);
@@ -8,7 +9,14 @@ const Hero = () => {
   const [showSearch, setShowSearch] = useState(true);
   const [inputValue, setInputValue] = useState("");
   const [registrationValue, setRegistrationValue] = useState("");
-  const [passwordValue, setPasswordValue] = useState(""); 
+  const [passwordValue, setPasswordValue] = useState("");
+  const [fileList, setFileList] = useState([]);
+
+  const handleChange = (info) => {
+    let fileList = [...info.fileList];
+    fileList = fileList.slice(-1); // Limit to one file
+    setFileList(fileList);
+  };
 
   const handleButtonClick = () => {
     fileInputRef.current.click();
@@ -41,15 +49,17 @@ const Hero = () => {
         <h3 className="hero-title font-ibm">SecureDoc Universal Verifier</h3>
         {showSearch && (
           <div className="search-container">
-            <Search
-              placeholder="Enter URL"
-              allowClear
-              enterButton="Verify"
-              size="large"
-              onClick={handleSearchClick}
-              onSearch={handleSearch}
-              className="url-search"
-            />
+            <a href={CV} target="_blank" rel="noopener noreferrer">
+              <Search
+                placeholder="Enter URL"
+                allowClear
+                enterButton="Verify"
+                size="large"
+                onClick={handleSearchClick}
+                onSearch={handleSearch}
+                className="url-search"
+              />
+            </a>
           </div>
         )}
 
@@ -93,6 +103,16 @@ const Hero = () => {
             <p onClick={handleButtonClick} className="pdf-text">
               Upload PDF
             </p>
+          </div>
+          <div>
+            <Upload
+              fileList={fileList}
+              onChange={handleChange}
+              maxCount={1}
+              showUploadList={false}
+            >
+              <p className="pdf-text">Choose JSON File</p>
+            </Upload>
           </div>
           <div>
             {showSearch && (
