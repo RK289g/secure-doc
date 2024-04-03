@@ -1,26 +1,22 @@
-import { Button, Input, Upload } from "antd";
+import { Button, Input } from "antd";
+import { CloseCircleOutlined } from "@ant-design/icons";
 import "./Hero.css";
-import { useRef, useState } from "react";
-import CV from "../../../assets/pdf/Certificate.pdf";
+import { useState } from "react";
+import PdfComponents from "../../hero-components/pdf-components/PdfComponents";
+import JsonFile from "../../hero-components/json-file/JsonFile";
+import Certificate from "./certificate/Certificate";
+
 const { Search } = Input;
+
 const Hero = () => {
-  const fileInputRef = useRef(null);
   const [showRegistration, setShowRegistration] = useState(false);
   const [showSearch, setShowSearch] = useState(true);
+  const [showPdfOption, setShowPdfOption] = useState(false);
+  const [showCertificate, setShowCertificate] = useState(false); // State to control visibility of Certificate component
   const [inputValue, setInputValue] = useState("");
   const [registrationValue, setRegistrationValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
-  const [fileList, setFileList] = useState([]);
-
-  const handleChange = (info) => {
-    let fileList = [...info.fileList];
-    fileList = fileList.slice(-1); // Limit to one file
-    setFileList(fileList);
-  };
-
-  const handleButtonClick = () => {
-    fileInputRef.current.click();
-  };
+  const [showCloseButton, setShowCloseButton] = useState(false); // State to control visibility of close button
 
   const handleLoginClick = () => {
     setShowRegistration(true);
@@ -30,10 +26,14 @@ const Hero = () => {
   const handleSearchClick = () => {
     setShowRegistration(false);
     setShowSearch(true);
+    setShowCertificate(true);
+    setShowCloseButton(true); // Show the close button when showing the certificate
   };
 
   const handleSearch = (value) => {
     setInputValue(value);
+    setShowCertificate(true); // Show the certificate component when searching
+    setShowCloseButton(true); // Show the close button when showing the certificate
     console.log("current URL:", value);
     console.log("previous URL:", inputValue);
   };
@@ -43,26 +43,33 @@ const Hero = () => {
     console.log("Password:", passwordValue);
   };
 
+  const handlePdfComponentClick = () => {
+    setShowSearch(false);
+    setShowPdfOption(true);
+  };
+
+  const handleCloseButtonClick = () => {
+    setShowCertificate(false); // Close the certificate component
+    setShowCloseButton(false); // Hide the close button
+  };
+
   return (
     <div className="hero-wrapper">
       <div className="hero-inner-wrapper">
         <h3 className="hero-title font-ibm">SecureDoc Universal Verifier</h3>
         {showSearch && (
           <div className="search-container">
-            <a href={CV} target="_blank" rel="noopener noreferrer">
-              <Search
-                placeholder="Enter URL"
-                allowClear
-                enterButton="Verify"
-                size="large"
-                onClick={handleSearchClick}
-                onSearch={handleSearch}
-                className="url-search"
-              />
-            </a>
+            <Search
+              placeholder="Enter URL"
+              allowClear
+              enterButton="Verify"
+              size="large"
+              onClick={handleSearchClick}
+              onSearch={handleSearch}
+              className="url-search"
+            />
           </div>
         )}
-
         {showRegistration && (
           <div className="login-container">
             <div>
@@ -91,29 +98,17 @@ const Hero = () => {
             </div>
           </div>
         )}
+        {showPdfOption && (
+          <div className="pdf-option-container">
+            <p>Choose PDF option here</p>
+            <PdfComponents />
+          </div>
+        )}
         <div className="pdf-regi-wrapper">
-          <div className="pdf-wrapper">
-            <input
-              type="file"
-              id="myfile"
-              name="myfile"
-              ref={fileInputRef}
-              style={{ display: "none" }}
-            />
-            <p onClick={handleButtonClick} className="pdf-text">
-              Upload PDF
-            </p>
-          </div>
-          <div>
-            <Upload
-              fileList={fileList}
-              onChange={handleChange}
-              maxCount={1}
-              showUploadList={false}
-            >
-              <p className="pdf-text">Choose JSON File</p>
-            </Upload>
-          </div>
+          <p onClick={handlePdfComponentClick} className="pdf-text">
+            Upload PDF
+          </p>
+          <JsonFile />
           <div>
             {showSearch && (
               <p onClick={handleLoginClick} className="pdf-text">
@@ -129,6 +124,18 @@ const Hero = () => {
             )}
           </div>
         </div>
+        {showCertificate && (
+          <div className="certificate-wrapper">
+            {showCloseButton && ( // Render the close button conditionally
+              <p className="close-wrapper" onClick={handleCloseButtonClick}>
+                <CloseCircleOutlined />
+                close
+              </p>
+            )}
+            <Certificate />
+          </div>
+        )}
+
         <div className="credential-wrapper">
           <p className="credential-text font-ibm">
             You may share your Blockcerts with CHAPI if you have a compatible
