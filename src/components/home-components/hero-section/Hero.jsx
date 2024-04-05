@@ -1,10 +1,10 @@
 import { Button, Input } from "antd";
-import { CloseCircleOutlined } from "@ant-design/icons";
+// import { CloseCircleOutlined } from "@ant-design/icons";
 import "./Hero.css";
-import { useState } from "react";
-import PdfComponents from "../../hero-components/pdf-components/PdfComponents";
+import { useRef, useState } from "react";
+// import PdfComponents from "../../hero-components/pdf-components/PdfComponents";
 import JsonFile from "../../hero-components/json-file/JsonFile";
-import Certificate from "./certificate/Certificate";
+// import Certificate from "./certificate/Certificate";
 
 const { Search } = Input;
 
@@ -12,11 +12,11 @@ const Hero = () => {
   const [showRegistration, setShowRegistration] = useState(false);
   const [showSearch, setShowSearch] = useState(true);
   const [showPdfOption, setShowPdfOption] = useState(false);
-  const [showCertificate, setShowCertificate] = useState(false); // State to control visibility of Certificate component
-  const [inputValue, setInputValue] = useState("");
+  // const [showCertificate, setShowCertificate] = useState(false); 
+  // const [inputValue, setInputValue] = useState("");
   const [registrationValue, setRegistrationValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
-  const [showCloseButton, setShowCloseButton] = useState(false); // State to control visibility of close button
+  // const [showCloseButton, setShowCloseButton] = useState(false);
 
   const handleLoginClick = () => {
     setShowRegistration(true);
@@ -25,39 +25,51 @@ const Hero = () => {
 
   const handleSearchClick = () => {
     setShowRegistration(false);
+    // setShowCloseButton(true);
     setShowSearch(true);
-    setShowCertificate(true);
-    setShowCloseButton(true); // Show the close button when showing the certificate
+    // setShowCertificate(true);
   };
 
-  const handleSearch = (value) => {
-    setInputValue(value);
-    setShowCertificate(true); // Show the certificate component when searching
-    setShowCloseButton(true); // Show the close button when showing the certificate
-    console.log("current URL:", value);
-    console.log("previous URL:", inputValue);
-  };
+  // const handleSearch = (value) => {
+  //   setInputValue(value);
+  //   console.log("current URL:", value);
+  //   console.log("previous URL:", inputValue);
+  // };
 
   const handleLogin = () => {
     console.log("Registration:", registrationValue);
     console.log("Password:", passwordValue);
   };
 
-  const handlePdfComponentClick = () => {
-    setShowSearch(false);
-    setShowPdfOption(true);
+  // const handleCloseButtonClick = () => {
+  //   setShowCertificate(false);
+  //   // setShowCloseButton(false);
+  // };
+
+  const pdfInputRef = useRef(null);
+  const [selectedPdfFile, setSelectedPdfFile] = useState(null);
+
+  const handleUploadPdf = () => {
+    pdfInputRef.current.click();
   };
 
-  const handleCloseButtonClick = () => {
-    setShowCertificate(false); // Close the certificate component
-    setShowCloseButton(false); // Hide the close button
+  const [pdfSrc, setPdfSrc] = useState(null);
+
+  const handlePdfChange = (e) => {
+    setSelectedPdfFile(e.target.files[0]);
+    console.log("uploading.......");
+    const fileReader = new FileReader();
+    fileReader.onload = () => {
+      setPdfSrc(fileReader.result);
+    };
+    fileReader.readAsDataURL(e.target.files[0]);
   };
 
   return (
     <div className="hero-wrapper">
       <div className="hero-inner-wrapper">
         <h3 className="hero-title font-ibm">SecureDoc Universal Verifier</h3>
-        {showSearch && (
+        {!showPdfOption && (
           <div className="search-container">
             <Search
               placeholder="Enter URL"
@@ -65,11 +77,34 @@ const Hero = () => {
               enterButton="Verify"
               size="large"
               onClick={handleSearchClick}
-              onSearch={handleSearch}
+              // onSearch={handleSearch}
               className="url-search"
             />
           </div>
         )}
+
+        {showPdfOption && (
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div>
+              <Button onClick={handleUploadPdf}>Choose a PDF</Button>
+              <input
+                type="file"
+                id="myfile"
+                name="myfile"
+                ref={pdfInputRef}
+                style={{ display: "none" }}
+                onChange={handlePdfChange}
+              />
+              {selectedPdfFile && <p>{selectedPdfFile.name}</p>}
+            </div>
+            <div>
+              <Button disabled={!selectedPdfFile} onClick={handleUploadPdf}>
+                Upload PDF
+              </Button>
+            </div>
+          </div>
+        )}
+
         {showRegistration && (
           <div className="login-container">
             <div>
@@ -98,33 +133,28 @@ const Hero = () => {
             </div>
           </div>
         )}
-        {showPdfOption && (
-          <div className="pdf-option-container">
-            <p>Choose PDF option here</p>
-            <PdfComponents />
-          </div>
-        )}
         <div className="pdf-regi-wrapper">
-          <p onClick={handlePdfComponentClick} className="pdf-text">
+          <p
+            onClick={() => setShowPdfOption(!showPdfOption)}
+            className="pdf-text"
+          >
             Upload PDF
           </p>
           <JsonFile />
           <div>
             {showSearch && (
               <p onClick={handleLoginClick} className="pdf-text">
-                {" "}
                 login via Registration and password
               </p>
             )}
             {showRegistration && (
               <p onClick={handleSearchClick} className="pdf-text">
-                {" "}
                 Enter URL
               </p>
             )}
           </div>
         </div>
-        {showCertificate && (
+        {/* {showCertificate && (
           <div className="certificate-wrapper">
             {showCloseButton && ( // Render the close button conditionally
               <p className="close-wrapper" onClick={handleCloseButtonClick}>
@@ -134,7 +164,16 @@ const Hero = () => {
             )}
             <Certificate />
           </div>
-        )}
+        )} */}
+
+        <div>
+          <iframe
+            title="pdf"
+            src={pdfSrc}
+            width="500px"
+            height="500px"
+          ></iframe>
+        </div>
 
         <div className="credential-wrapper">
           <p className="credential-text font-ibm">
