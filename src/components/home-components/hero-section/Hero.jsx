@@ -1,10 +1,8 @@
 import { Button, Input } from "antd";
-// import { CloseCircleOutlined } from "@ant-design/icons";
 import "./Hero.css";
-import { useRef, useState } from "react";
-// import PdfComponents from "../../hero-components/pdf-components/PdfComponents";
+import { useState } from "react";
 import JsonFile from "../../hero-components/json-file/JsonFile";
-// import Certificate from "./certificate/Certificate";
+import PdfComponents from "../../hero-components/pdf-components/PdfComponents";
 
 const { Search } = Input;
 
@@ -12,11 +10,10 @@ const Hero = () => {
   const [showRegistration, setShowRegistration] = useState(false);
   const [showSearch, setShowSearch] = useState(true);
   const [showPdfOption, setShowPdfOption] = useState(false);
-  // const [showCertificate, setShowCertificate] = useState(false); 
-  // const [inputValue, setInputValue] = useState("");
   const [registrationValue, setRegistrationValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
-  // const [showCloseButton, setShowCloseButton] = useState(false);
+
+  const [pdfSrc, setPdfSrc] = useState(null);
 
   const handleLoginClick = () => {
     setShowRegistration(true);
@@ -25,44 +22,12 @@ const Hero = () => {
 
   const handleSearchClick = () => {
     setShowRegistration(false);
-    // setShowCloseButton(true);
     setShowSearch(true);
-    // setShowCertificate(true);
   };
-
-  // const handleSearch = (value) => {
-  //   setInputValue(value);
-  //   console.log("current URL:", value);
-  //   console.log("previous URL:", inputValue);
-  // };
 
   const handleLogin = () => {
     console.log("Registration:", registrationValue);
     console.log("Password:", passwordValue);
-  };
-
-  // const handleCloseButtonClick = () => {
-  //   setShowCertificate(false);
-  //   // setShowCloseButton(false);
-  // };
-
-  const pdfInputRef = useRef(null);
-  const [selectedPdfFile, setSelectedPdfFile] = useState(null);
-
-  const handleUploadPdf = () => {
-    pdfInputRef.current.click();
-  };
-
-  const [pdfSrc, setPdfSrc] = useState(null);
-
-  const handlePdfChange = (e) => {
-    setSelectedPdfFile(e.target.files[0]);
-    console.log("uploading.......");
-    const fileReader = new FileReader();
-    fileReader.onload = () => {
-      setPdfSrc(fileReader.result);
-    };
-    fileReader.readAsDataURL(e.target.files[0]);
   };
 
   return (
@@ -77,32 +42,13 @@ const Hero = () => {
               enterButton="Verify"
               size="large"
               onClick={handleSearchClick}
-              // onSearch={handleSearch}
               className="url-search"
             />
           </div>
         )}
 
         {showPdfOption && (
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <div>
-              <Button onClick={handleUploadPdf}>Choose a PDF</Button>
-              <input
-                type="file"
-                id="myfile"
-                name="myfile"
-                ref={pdfInputRef}
-                style={{ display: "none" }}
-                onChange={handlePdfChange}
-              />
-              {selectedPdfFile && <p>{selectedPdfFile.name}</p>}
-            </div>
-            <div>
-              <Button disabled={!selectedPdfFile} onClick={handleUploadPdf}>
-                Upload PDF
-              </Button>
-            </div>
-          </div>
+          <PdfComponents setPdfSrc={setPdfSrc} pdfSrc={pdfSrc} />
         )}
 
         {showRegistration && (
@@ -154,26 +100,17 @@ const Hero = () => {
             )}
           </div>
         </div>
-        {/* {showCertificate && (
-          <div className="certificate-wrapper">
-            {showCloseButton && ( // Render the close button conditionally
-              <p className="close-wrapper" onClick={handleCloseButtonClick}>
-                <CloseCircleOutlined />
-                close
-              </p>
-            )}
-            <Certificate />
-          </div>
-        )} */}
 
-        <div>
-          <iframe
-            title="pdf"
-            src={pdfSrc}
-            width="500px"
-            height="500px"
-          ></iframe>
-        </div>
+        {pdfSrc && (
+          <div style={{ marginTop: "20px" }}>
+            <iframe
+              title="pdf"
+              src={pdfSrc}
+              width="780px"
+              height="900px"
+            ></iframe>
+          </div>
+        )}
 
         <div className="credential-wrapper">
           <p className="credential-text font-ibm">
